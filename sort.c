@@ -139,12 +139,14 @@ void quickSortByRecursive(int arr[], int start, int end) {
             right--;
         swap(&arr[left], &arr[right]);
     }
-    if (arr[left] >= arr[end])
-        swap(&arr[left], &arr[end]);
-    else
+//    if (arr[left] >= val)
+//        swap(&arr[left], &arr[end]);
+//    else
+//        left++;
+    if (arr[left] < val)
         left++;
-    if (left)
-        quickSortByRecursive(arr, start, left - 1);
+    swap(&arr[left], &arr[end]);
+    quickSortByRecursive(arr, start, left - 1);
     quickSortByRecursive(arr, left + 1, end);
 }
 
@@ -154,9 +156,10 @@ void quickSort(int arr[], int len) {
 
 
 /* 快速排序 迭代 */
-typedef struct _Range {
+typedef struct {
     int start, end;
 } Range;
+
 Range new_Range(int s, int e) {
     Range r;
     r.start = s;
@@ -164,6 +167,34 @@ Range new_Range(int s, int e) {
     return r;
 }
 
+void quickSortByIter(int arr[], const int len) {
+    if (len <= 0)
+        return;
+    Range r[len];
+    int p = 0;
+    r[p++] = new_Range(0, len - 1);
+    while (p > 0) {
+        Range range = r[--p];
+        if (range.start >= range.end)
+            continue;
+        int mid = arr[(range.start + range.end) / 2];
+        int left = range.start, right = range.end;
+        do {
+            while (arr[left] < mid)
+                left++;
+            while (arr[right] < mid)
+                right--;
+            if (left <= right) {
+                swap(&arr[left], &arr[right]);
+                left++;
+                right++;
+            }
+        } while (left <= right);
+
+        if (range.start < right) r[p++] = new_Range(range.start, right);
+        if (range.end > left) r[p++] = new_Range(left, range.end);
+    }
+}
 
 int main() {
     int arr[] = { 22, 34, 3, 32, 82, 55, 89, 50, 37, 5, 64, 35, 9, 70 };
@@ -174,7 +205,8 @@ int main() {
 //    shellSort(arr, len);
 //    mergeSort(arr, len);
 //    mergeSortByIter(arr, len);
-    quickSort(arr, len);
+//    quickSort(arr, len);
+    quickSortByIter(arr, len);
     for (int i = 0; i < len; i++)
         printf("%d ", arr[i]);
     printf("\n");
