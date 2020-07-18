@@ -130,12 +130,12 @@ void mergeSortByIter(int arr[], int len) {
 void quickSortByRecursive(int arr[], int start, int end) {
     if (start >= end)
         return;
-    int mid = arr[end];
+    int val = arr[end];
     int left = start, right = end - 1;
     while (left < right) {
-        while (arr[left] < mid && left < right)
+        while (arr[left] < val && left < right)
             left++;
-        while (arr[right] >= mid && left < right)
+        while (arr[right] >= val && left < right)
             right--;
         swap(&arr[left], &arr[right]);
     }
