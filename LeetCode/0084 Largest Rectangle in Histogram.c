@@ -31,7 +31,6 @@ int largestRectangleArea(int* heights, int heightsSize){
     return ans;
 }
 
-
 /* Stack */
 int largestRectangleArea(int* heights, int heightsSize) {
     int *tmp = (int *)malloc(sizeof(int) * (heightsSize + 1));
@@ -40,18 +39,18 @@ int largestRectangleArea(int* heights, int heightsSize) {
         tmp[i] = heights[i];
 
     int *stack = (int *)malloc(sizeof(int) * (heightsSize + 1));
-    int top = -1, ans = 0, area, idx, distance;
+    int top = -1, ans = 0, area, idx;
     for (int i = 0; i < heightsSize + 1; i++) {
-        while (top >= 0 && heights[stack[top]] > heights[i])
+        while (top >= 0 && tmp[stack[top]] > tmp[i]) {
             idx = stack[top--];
-        if (top == -1) {
-            distance = i;
-        } else {
-            distance = i - stack[top] - 1;
+            if (top == -1) {
+                area = tmp[idx] * i;
+            } else {
+                area = tmp[idx] * (i - stack[top] - 1);
+            }
+            if (area > ans)
+                ans = area;
         }
-        area = heights[idx] * distance;
-        if (area > ans)
-            ans = area;
         stack[++top] = i;
     }
     return ans;
