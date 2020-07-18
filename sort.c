@@ -173,27 +173,48 @@ void quickSortByIter(int arr[], const int len) {
     Range r[len];
     int p = 0;
     r[p++] = new_Range(0, len - 1);
-    while (p > 0) {
+    while (p) {
         Range range = r[--p];
         if (range.start >= range.end)
             continue;
-        int mid = arr[(range.start + range.end) / 2];
-        int left = range.start, right = range.end;
-        do {
-            while (arr[left] < mid)
+        int mid = arr[range.end];
+        int left = range.start, right = range.end - 1;
+        while (left < right) {
+            while (arr[left] < mid && left < right)
                 left++;
-            while (arr[right] < mid)
+            while (arr[right] >= mid && left < right)
                 right--;
-            if (left <= right) {
-                swap(&arr[left], &arr[right]);
-                left++;
-                right++;
-            }
-        } while (left <= right);
+            swap(&arr[left], &arr[right]);
+        }
+        if (arr[left] < mid)
+            left++;
+        swap(&arr[left], &arr[range.end]);
 
-        if (range.start < right) r[p++] = new_Range(range.start, right);
-        if (range.end > left) r[p++] = new_Range(left, range.end);
+        if (range.start < left - 1)
+            r[p++] = new_Range(range.start, left - 1);
+        if (left + 1 < range.end)
+            r[p++] = new_Range(left + 1, range.end);
     }
+//    while (p) {
+//        Range range = r[--p];
+//        if (range.start >= range.end)
+//            continue;
+//        int mid = arr[(range.start + range.end) / 2];
+//        int left = range.start, right = range.end - 1;
+//        do {
+//            while (arr[left] < mid)
+//                left++;
+//            while (arr[right] < mid)
+//                right--;
+//            if (left <= right) {
+//                swap(&arr[left], &arr[right]);
+//                left++;
+//                right--;
+//            }
+//        } while (left <= right);
+//        if (range.start < right) r[p++] = new_Range(range.start, right);
+//        if (range.end > left) r[p++] = new_Range(left, range.end);
+//    }
 }
 
 int main() {
