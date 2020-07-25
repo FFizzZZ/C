@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+/* from tail to head */
 int* dailyTemperatures(int* T, int TSize, int* returnSize){
     *returnSize = TSize;
     int *ret = (int *)malloc(sizeof(int) * TSize);
@@ -18,6 +19,7 @@ int* dailyTemperatures(int* T, int TSize, int* returnSize){
     return ret;
 }
 
+/* from head to tail */
 int* dailyTemperatures(int* T, int TSize, int* returnSize) {
     int top = -1;
     int *stack = calloc(TSize, sizeof(int));
@@ -36,7 +38,7 @@ int* dailyTemperatures(int* T, int TSize, int* returnSize) {
 }
 
 
-/* 测试用例 */
+/* test case */
 int main() {
     int T[8] = { 73, 74, 75, 71, 69, 72, 76, 73 };
     int a = 8;
