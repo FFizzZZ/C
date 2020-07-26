@@ -4,16 +4,14 @@
 /* from tail to head */
 int* dailyTemperatures(int* T, int TSize, int* returnSize){
     *returnSize = TSize;
-    int *ret = (int *)malloc(sizeof(int) * TSize);
-    int *stack = (int *)malloc(sizeof(int) * TSize);
+    int *ret = calloc(TSize, sizeof(int));
+    int *stack = malloc(sizeof(int) * TSize);
     int top = -1, val;
     for (int i = TSize - 1; i >= 0; i--) {
         while (top > -1 && T[i] >= T[stack[top]])
             top--;
         if (top > -1)
             ret[i] = stack[top] - i;
-        else
-            ret[i] = 0;
         stack[++top] = i;
     }
     return ret;
@@ -25,14 +23,10 @@ int* dailyTemperatures(int* T, int TSize, int* returnSize) {
     int *stack = calloc(TSize, sizeof(int));
     int *ret = calloc(TSize, sizeof(int));
     *returnSize = TSize;
-    for (int i = 0; i < TSize - 1; i++) {
-        if (T[i] < T[i + 1]) {
-            ret[i] = 1;
-            while (top >= 0 && T[stack[top]] < T[i + 1])
-                ret[stack[top--]] = i + 1 - stack[top];
-        } else {
-            stack[++top] = i;
-        }
+    for (int i = 0; i < TSize; i++) {
+        while (top >= 0 && T[stack[top]] < T[i])
+            ret[stack[top--]] = i - stack[top];
+        stack[++top] = i;
     }
     return ret;
 }
